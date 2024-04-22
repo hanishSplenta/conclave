@@ -1,0 +1,119 @@
+{
+  "project_info": {
+    "project_number": "842540261392",
+    "firebase_url": "https://pulse-employee-app-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "pulse-employee-app",
+    "storage_bucket": "pulse-employee-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842540261392:android:a8dab0f90ff187a2c12a95",
+        "android_client_info": {
+          "package_name": "com.example.conclave"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842540261392-2vlk8huff3vc7dlog33299qgr5pfnkgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBReS-N_OkayZwETCZN8iSLvUTgE3HHwvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "842540261392-2vlk8huff3vc7dlog33299qgr5pfnkgj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "842540261392-ujs5ve19dd3d4c13fbs9i5h8lflukito.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.federal.pulse"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842540261392:android:2c5b87f2a75b0f93c12a95",
+        "android_client_info": {
+          "package_name": "com.federal.pulse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842540261392-2vlk8huff3vc7dlog33299qgr5pfnkgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBReS-N_OkayZwETCZN8iSLvUTgE3HHwvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "842540261392-2vlk8huff3vc7dlog33299qgr5pfnkgj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "842540261392-ujs5ve19dd3d4c13fbs9i5h8lflukito.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.federal.pulse"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842540261392:android:1c19a14081cd23c9c12a95",
+        "android_client_info": {
+          "package_name": "com.federal.pulse2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842540261392-2vlk8huff3vc7dlog33299qgr5pfnkgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBReS-N_OkayZwETCZN8iSLvUTgE3HHwvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "842540261392-2vlk8huff3vc7dlog33299qgr5pfnkgj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "842540261392-ujs5ve19dd3d4c13fbs9i5h8lflukito.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.federal.pulse"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
