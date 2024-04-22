@@ -1,4 +1,3 @@
-import 'package:conclave/home_page.dart';
 import 'package:flutter/material.dart';
 
 import 'image_capture.dart';
@@ -14,7 +13,6 @@ class _GreetingScreenState extends State<GreetingScreen> {
   @override
   void initState() {
     nextTask();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -34,7 +32,7 @@ class _GreetingScreenState extends State<GreetingScreen> {
     // Navigator.pushReplacement(
     //     context, MaterialPageRoute(builder: (context) => HomePage()));
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => ImageCapture()));
+        context, MaterialPageRoute(builder: (context) => const ImageCapture()));
   }
 
   bool opc = true;
@@ -53,12 +51,12 @@ class _GreetingScreenState extends State<GreetingScreen> {
             ),
           ),
           AnimatedOpacity(
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
             opacity: opc ? 1 : 0,
             child: const Center(
-                child: const Text(
+                child: Text(
               'Welcome',
-              style: TextStyle(fontSize: 30, color: Colors.grey),
+              style: TextStyle(fontSize: 50, color: Colors.grey),
             )),
           )
         ],

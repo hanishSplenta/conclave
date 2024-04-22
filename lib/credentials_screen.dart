@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conclave/otp_verifcation.dart';
 import 'package:conclave/services/storage_services.dart';
-import 'package:conclave/utils/random.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:neopop/neopop.dart';

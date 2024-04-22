@@ -87,7 +87,7 @@ class _ImageCaptureState extends State<ImageCapture> {
   }
 
   void _changeContainer() {
-    print(_currentIndex.toString() + "------------>");
+    print("$_currentIndex------------>");
     debugPrint('line 93');
     if (_currentIndex < 4) {
       _takePicture();

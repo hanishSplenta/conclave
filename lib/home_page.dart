@@ -3,7 +3,6 @@ import 'package:conclave/custom/spacers.dart';
 import 'package:conclave/quiz_home.dart';
 import 'package:conclave/web_view_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -16,7 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   CarouselController buttonCarouselController = CarouselController();
-  bool _stretch = true;
+
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
@@ -36,7 +35,7 @@ class _HomePageState extends State<HomePage> {
           slivers: <Widget>[
             SliverAppBar(
               backgroundColor: Colors.transparent,
-              stretch: _stretch,
+              stretch: false,
               automaticallyImplyLeading: false,
               onStretchTrigger: () async {
                 // Triggers when stretching
@@ -145,9 +144,9 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     VerticalSpacer(height: 20),
-                    const SizedBox(
-                      height: 180,
-                    ),
+                    // const SizedBox(
+                    //   height: 180,
+                    // ),
                     // Padding(
                     //   padding: const EdgeInsets.all(20.0),
                     //   child: Container(
@@ -326,6 +325,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
+                    VerticalSpacer(height: 70)
                   ],
                 ),
               ),

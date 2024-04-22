@@ -5,12 +5,11 @@ import 'package:conclave/services/storage_services.dart';
 import 'package:conclave/utils/random.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:neopop/neopop.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
-import 'custom/custom_button.dart';
 import 'custom/spacers.dart';
 
 class OtpVericationScreen extends StatefulWidget {
@@ -75,7 +74,7 @@ class _OtpVericationScreenState extends State<OtpVericationScreen> {
         );
       } catch (e) {
         // Handle other errors
-        print(e.toString() + "----------------");
+        print("$e----------------");
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('An error occurred')),
@@ -102,9 +101,9 @@ class _OtpVericationScreenState extends State<OtpVericationScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  CircularProgressIndicator(),
+                  const CircularProgressIndicator(),
                   HorizontalSpacer(width: 20),
-                  Text("Signing in as " + userData['Name']),
+                  Text('Signing in as ${userData['Name']}'),
                 ],
               ),
             ));
@@ -162,9 +161,9 @@ class _OtpVericationScreenState extends State<OtpVericationScreen> {
                   Text('OTP sent to $mob'),
                   VerticalSpacer(height: 20),
                   OtpTextField(
-                    contentPadding: EdgeInsets.symmetric(),
+                    contentPadding: const EdgeInsets.symmetric(),
                     numberOfFields: 6,
-                    borderColor: Color(0xFF00488E),
+                    borderColor: const Color(0xFF00488E),
                     showFieldAsBox: true,
                     onCodeChanged: (String code) {
                       setState(() {
@@ -175,7 +174,6 @@ class _OtpVericationScreenState extends State<OtpVericationScreen> {
                       setState(() {
                         otp = verifCode;
                       });
-
                     },
                   ),
                   VerticalSpacer(height: 35),
