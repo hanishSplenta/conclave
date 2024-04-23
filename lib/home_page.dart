@@ -285,6 +285,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
+                    const Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Text('Explore'),
+                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
