@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:conclave/custom/spacers.dart';
 import 'package:conclave/models/quiz_model.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,9 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   int q = 0;
+  bool loading = true;
   List<Questions> questions = [];
+  String selected = '';
 
   getDocuments() async {
     final collectionRef =
@@ -41,6 +44,7 @@ class _QuizPageState extends State<QuizPage> {
         .toList();
     setState(() {
       questions = _features;
+      loading = false;
     });
 
     print(_features[0].question.toString());
@@ -52,7 +56,11 @@ class _QuizPageState extends State<QuizPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getDocuments();
+      getDocuments();
+    // Future.delayed(Duration(seconds: 1));
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -64,20 +72,84 @@ class _QuizPageState extends State<QuizPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          children: [
-            Text(questions[q].question ?? ''),
-            TextButton(
-                onPressed: () {
-                  if (q < questions.length - 1) {
-                    setState(() {
-                      q++;
-                    });
-                    print(q);
-                  }
-                },
-                child: q < questions.length - 1 ? const Text('next') : const Text('Finish'))
-          ],
-        ),
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text((q + 1).toString()),
+                      ),
+                      loading ? Text('') :Text(questions[q].question ?? ''),
+                    ],
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: questions.length,
+                    itemBuilder: (context, index) {
+                      String option = questions[q].options![index];
+                      return Row(
+                        key:
+                            ValueKey(index), // Unique key for each radio button
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Radio(
+                            value: index,
+                            groupValue: selected,
+                            onChanged: (value) {
+                              // selectedIndex = value as int;
+                              setState(() {
+                                selected = questions[q].options![value as int];
+                              });
+                              print(questions[q].options![value as int]);
+                            },
+                          ),
+                          Text(option),
+                        ],
+                      );
+                    },
+                  ),
+                  // const Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(25.0),
+                        child: TextButton(
+                            onPressed: () {
+                              if (q < questions.length - 1) {
+                                if (selected == questions[q].answer) {
+                                  const snackBar = SnackBar(
+                                    /// need to set following properties for best effect of awesome_snackbar_content
+                                    elevation: 0,
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor:
+                                        Color.fromARGB(164, 0, 0, 0),
+                                    content: Text("Correct!"),
+                                  );
+
+                                  if (!context.mounted) return;
+
+                                  ScaffoldMessenger.of(context)
+                                    ..hideCurrentSnackBar()
+                                    ..showSnackBar(snackBar);
+                                }
+                                setState(() {
+                                  q++;
+                                });
+                                print(q);
+                              } else {
+                                Navigator.pop(context);
+                              }
+                            },
+                            child: q < questions.length - 1
+                                ? const Text('next')
+                                : const Text('Finish')),
+                      ),
+                    ],
+                  ),
+                  VerticalSpacer(height: 110)
+                ],
+              ),
       ),
     );
   }
