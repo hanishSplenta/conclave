@@ -1,8 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:conclave/constants/constants.dart';
 import 'package:conclave/custom/spacers.dart';
+import 'package:conclave/models/feature_model.dart';
 import 'package:conclave/quiz_home.dart';
+import 'package:conclave/services/storage_services.dart';
 import 'package:conclave/web_view_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -15,6 +21,293 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   CarouselController buttonCarouselController = CarouselController();
+
+  final titleController = TextEditingController();
+  final imageUrlController = TextEditingController();
+  final pageUrlController = TextEditingController();
+
+  bool admin = false;
+  String name = "NA";
+
+  List<FeatureModel> featues = [];
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> quizes = [];
+
+  adminCheck() async {
+    print("rannn27");
+    final pf = await LocalStorageService().loadData('Pfnum') ?? '';
+
+    final docRef =
+        FirebaseFirestore.instance.collection('conclaveData').doc('data');
+
+    try {
+      print("rannn34");
+      final doc = await docRef.get();
+      if (!doc.exists) {
+        return false;
+      }
+
+      final data = doc.data();
+      if (data == null || data['admins'] == null) {
+        return false;
+      }
+
+      print(_checkNumberInAdmins(data['admins'], pf));
+
+      setState(() {
+        admin = _checkNumberInAdmins(data['admins'], pf);
+      });
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+
+    return true;
+  }
+
+  bool _checkNumberInAdmins(List admins, String yourNumber) {
+    return admins.any((admin) => admin == yourNumber);
+  }
+
+  showNameByNumber() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    try {
+      final num = await LocalStorageService().loadData('mobNo') ?? '';
+      final querySnapshot = await firestore
+          .collection('employee_details_v2')
+          .where('MobileNo', isEqualTo: num)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        final docSnapshot = querySnapshot.docs.first;
+        final userData = docSnapshot.data();
+
+        setState(() {
+          name = userData['Name'];
+        });
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+
+    // return null; // Indicate name not found
+  }
+
+  void _showPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add Feature'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min, // Content won't overflow
+            children: [
+              TextFormField(
+                keyboardType: TextInputType.text,
+                controller: titleController,
+                decoration: InputDecoration(
+                  label: const Text(
+                    "title",
+                    style: TextStyle(
+                      color: secondaryColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  hintText: "enter feature title",
+                  hintStyle: const TextStyle(
+                    color: Color(0x00999999),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  // contentPadding:
+                  //     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  // border: OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(8),
+                  //   borderSide: BorderSide(color: secondaryColor, width: 1),
+                  // ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide:
+                        const BorderSide(color: tertiaryColor, width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: primaryColor, width: 2),
+                  ),
+                ),
+              ),
+              VerticalSpacer(height: 15),
+              TextFormField(
+                keyboardType: TextInputType.text,
+                controller: imageUrlController,
+                decoration: InputDecoration(
+                  label: const Text(
+                    "Image url",
+                    style: TextStyle(
+                      color: secondaryColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  hintText: "enter Image url",
+                  hintStyle: const TextStyle(
+                    color: Color(0x00999999),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  // contentPadding:
+                  //     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  // border: OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(8),
+                  //   borderSide: BorderSide(color: secondaryColor, width: 1),
+                  // ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide:
+                        const BorderSide(color: tertiaryColor, width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: primaryColor, width: 2),
+                  ),
+                ),
+              ),
+              VerticalSpacer(height: 15),
+              TextFormField(
+                keyboardType: TextInputType.text,
+                controller: pageUrlController,
+                decoration: InputDecoration(
+                  label: const Text(
+                    "Feature url",
+                    style: TextStyle(
+                      color: secondaryColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  hintText: "enter your 10 digit mobile number",
+                  hintStyle: const TextStyle(
+                    color: Color(0x00999999),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  // contentPadding:
+                  //     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  // border: OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(8),
+                  //   borderSide: BorderSide(color: secondaryColor, width: 1),
+                  // ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide:
+                        const BorderSide(color: tertiaryColor, width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: primaryColor, width: 2),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: primaryColor),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                // print(title);
+                addViewToFeatures();
+
+                // _sendDataToApi(title, imageUrl, pageUrl);
+                Navigator.pop(context); // Close the popup after sending data
+              },
+              child: const Text(
+                'Submit',
+                style: TextStyle(color: primaryColor),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Future<List<QueryDocumentSnapshot>>
+  getDocuments() async {
+    final collectionRef = FirebaseFirestore.instance.collection('conclaveQuiz');
+    final querySnapshot = await collectionRef.get();
+    final documents = querySnapshot.docs;
+    setState(() {
+      quizes = documents;
+    });
+    print(documents[0].id);
+  }
+
+  getTitles() async {
+    final docRef =
+        FirebaseFirestore.instance.collection('conclaveData').doc('Features');
+    final doc = await docRef.get();
+    if (!doc.exists) {
+      return []; // Document doesn't exist, return empty list
+    }
+
+    final data = doc.data();
+    if (data == null || data['webViews'] == null) {
+      return []; // No views array in the document
+    }
+
+    // Get the views list from the data
+    final views = data['webViews'] as List;
+
+    // Extract titles from each view
+    final List<FeatureModel> _features = views
+        .map((view) => FeatureModel.fromJson(view as Map<String, dynamic>))
+        .toList();
+
+    print("------------------>${_features[0].title}");
+
+    setState(() {
+      featues = _features;
+    });
+
+    // return features;
+  }
+
+  Future<void> addViewToFeatures() async {
+    final docRef =
+        FirebaseFirestore.instance.collection('conclaveData').doc('Features');
+    final title = titleController.text;
+    final imageUrl = imageUrlController.text;
+    final pageUrl = pageUrlController.text;
+    // Create the map for the view
+    final view = {'title': title, 'bgUrl': imageUrl, 'url': pageUrl};
+
+    print("--------------->");
+
+    // Update the document with the new view
+    await docRef.update({
+      'webViews': FieldValue.arrayUnion([view]), // Add the view to the array
+    });
+    titleController.clear();
+    imageUrlController.clear();
+    pageUrlController.clear();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    showNameByNumber();
+    adminCheck();
+
+    getTitles();
+
+    getDocuments();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +357,11 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           HorizontalSpacer(width: 10),
-                          const Column(
+                          Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'Hello',
                                 maxLines: 2,
                                 textAlign: TextAlign.start,
@@ -80,12 +373,12 @@ class _HomePageState extends State<HomePage> {
                                     fontWeight: FontWeight.w500),
                               ),
                               Text(
-                                'Hanish Koushik',
+                                name,
                                 maxLines: 2,
                                 textAlign: TextAlign.start,
                                 softWrap: false,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16.0,
                                     color: Color.fromARGB(255, 77, 77, 77),
                                     fontWeight: FontWeight.w500),
@@ -232,100 +525,113 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
 
-                    const Row(
-                      children: [],
-                    ),
-
-                    const Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text('Events'),
-                    ),
-
-                    // GridView.count(
-                    //   crossAxisCount: 2, // Set the number of columns to 2
-                    //   mainAxisSpacing:
-                    //       10.0, // Add spacing between rows (optional)
-                    //   crossAxisSpacing: 5.0,
-                    //   children: [],
-                    // ),
-
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: const QuizHome()));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Container(
-                          width: mq.size.width,
-                          height: 180,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 2,
-                                offset: const Offset(
-                                    0, 3), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[Text('Quiz')],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Text('Events'),
+                        ),
+                        if (admin) ...[
+                          GestureDetector(
+                            onTap: () {},
+                            child: const Padding(
+                              padding: EdgeInsets.all(15.0),
+                              child: Text('Add Quiz'),
                             ),
                           ),
+                        ],
+                      ],
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: SizedBox(
+                        height: 140.0, // Set a fixed height for the container
+                        child: ListView.builder(
+                          scrollDirection:
+                              Axis.horizontal, // Set horizontal scrolling
+                          itemCount: quizes.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        child: QuizHome(
+                                          quiz: quizes[index].id,
+                                        )));
+                              },
+                              child: Container(
+                                width: 200.0, // Set a width for each item
+                                padding: EdgeInsets.all(10.0),
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 5.0), // Add spacing
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Text(quizes[index].id),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text('Explore'),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: WebPage(
-                                  url:
-                                      "https://gemini.google.com/app/9d40c2e2e0beb858",
-                                  title: 'Web view',
-                                )));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Container(
-                          // width: double.infinity,
-                          height: 180,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 2,
-                                offset: const Offset(
-                                    0, 3), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[Text("webview sample")],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Text('Explore'),
+                        ),
+                        if (admin) ...[
+                          GestureDetector(
+                            onTap: () {
+                              _showPopup();
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(15.0),
+                              child: Text('Add Feature'),
                             ),
                           ),
+                        ],
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: SizedBox(
+                        height: 140.0, // Set a fixed height for the container
+                        child: ListView.builder(
+                          scrollDirection:
+                              Axis.horizontal, // Set horizontal scrolling
+                          itemCount: featues.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        child: WebPage(
+                                          url: featues[index].url!,
+                                          title: featues[index].title!,
+                                        )));
+                              },
+                              child: Container(
+                                width: 200.0, // Set a width for each item
+                                padding: EdgeInsets.all(10.0),
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 5.0), // Add spacing
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Text(featues[index].title!),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),

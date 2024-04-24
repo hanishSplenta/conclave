@@ -144,30 +144,10 @@ class _ImageCaptureState extends State<ImageCapture> {
         loading = false;
       });
     }
+    setState(() {
+      loading = false;
+    });
   }
-
-  // Future<void> _initializeCameras() async {
-  //   final cameras = await availableCameras();
-
-  //   // Validate camera availability
-  //   if (cameras.length < 4) {
-  //     print('Insufficient cameras found (minimum 4 required).');
-  //     return;
-  //   }
-
-  //   _cameraControllers = List.generate(
-  //       4, (index) => CameraController(cameras[index], ResolutionPreset.max));
-  //   _cameraPreviews.clear(); // Empty existing previews
-
-  //   for (final controller in _cameraControllers) {
-  //     await controller.initialize();
-  //     _cameraPreviews.add(CameraPreview(controller));
-  //   }
-
-  //   setState(() {
-  //     loading = false;
-  //   });
-  // }
 
   void _showWelcomePopup(BuildContext context) {
     print('rannnnnnn');
@@ -252,105 +232,114 @@ class _ImageCaptureState extends State<ImageCapture> {
                     },
                     icon: const Icon(Icons.arrow_back_ios_new)),
               ),
-              Column(
-                children: [
-                  // Text('capture images $_currentIndex'),
+              !loading
+                  ? Column(
+                      children: [
+                        // Text('capture images $_currentIndex'),
 
-                  // _cameraPreviews[
-                  //     _currentIndex], // Display the currently selected container
-                  CameraPreview(camCtrl!),
-                  const SizedBox(
-                      height: 20.0), // Add spacing between container and button
-                  // ElevatedButton(
-                  //   onPressed: _changeContainer,
-                  //   child: const Text('capture'),
-                  // ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            // Wrap CircleAvatar with Container
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color:
-                                  Colors.white, // Inner circle background color
-                              border: Border.all(
-                                color: Colors.black, // Border color
-                                width: 2.0, // Border width
-                              ),
-                            ),
-                            child: const CircleAvatar(
-                              backgroundColor: Colors
-                                  .transparent, // Make inner circle transparent
-                              radius: 35.0, // Adjust radius for desired size
-                            ),
-                          ),
-                          Text(_currentIndex.toString())
+                        // _cameraPreviews[
+                        //     _currentIndex], // Display the currently selected container
+                        if (camCtrl != null) ...[
+                          CameraPreview(camCtrl!),
                         ],
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          print('line 283');
-                          _changeContainer();
-                        },
-                        child: Stack(
+
+                        const SizedBox(
+                            height:
+                                20.0), // Add spacing between container and button
+                        // ElevatedButton(
+                        //   onPressed: _changeContainer,
+                        //   child: const Text('capture'),
+                        // ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Container(
-                              width: 84,
-                              height: 84,
-                              child: const CircleAvatar(
-                                backgroundColor:
-                                    Colors.white, // Outer circle color
-                                radius: 100.0, // Adjust radius for desired size
-                              ),
-                            ),
-                            Positioned(
-                              top: 5.0, // Adjust offset for positioning
-                              left: 5.0, // Adjust offset for positioning
-                              child: Container(
-                                // Wrap CircleAvatar with Container
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors
-                                      .white, // Inner circle background color
-                                  border: Border.all(
-                                    color: Colors.black, // Border color
-                                    width: 2.0, // Border width
+                            Stack(
+                              children: [
+                                Container(
+                                  // Wrap CircleAvatar with Container
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors
+                                        .white, // Inner circle background color
+                                    border: Border.all(
+                                      color: Colors.black, // Border color
+                                      width: 2.0, // Border width
+                                    ),
+                                  ),
+                                  child: const CircleAvatar(
+                                    backgroundColor: Colors
+                                        .transparent, // Make inner circle transparent
+                                    radius:
+                                        35.0, // Adjust radius for desired size
                                   ),
                                 ),
-                                child: const CircleAvatar(
-                                  backgroundColor: Colors
-                                      .transparent, // Make inner circle transparent
-                                  radius:
-                                      35.0, // Adjust radius for desired size
+                                Text(_currentIndex.toString())
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                print('line 283');
+                                _changeContainer();
+                              },
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    width: 84,
+                                    height: 84,
+                                    child: const CircleAvatar(
+                                      backgroundColor:
+                                          Colors.white, // Outer circle color
+                                      radius:
+                                          100.0, // Adjust radius for desired size
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 5.0, // Adjust offset for positioning
+                                    left: 5.0, // Adjust offset for positioning
+                                    child: Container(
+                                      // Wrap CircleAvatar with Container
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors
+                                            .white, // Inner circle background color
+                                        border: Border.all(
+                                          color: Colors.black, // Border color
+                                          width: 2.0, // Border width
+                                        ),
+                                      ),
+                                      child: const CircleAvatar(
+                                        backgroundColor: Colors
+                                            .transparent, // Make inner circle transparent
+                                        radius:
+                                            35.0, // Adjust radius for desired size
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              // Wrap CircleAvatar with Container
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors
+                                    .white, // Inner circle background color
+                                border: Border.all(
+                                  color: Colors.black, // Border color
+                                  width: 2.0, // Border width
                                 ),
+                              ),
+                              child: const CircleAvatar(
+                                backgroundColor: Colors
+                                    .transparent, // Make inner circle transparent
+                                radius: 35.0, // Adjust radius for desired size
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Container(
-                        // Wrap CircleAvatar with Container
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white, // Inner circle background color
-                          border: Border.all(
-                            color: Colors.black, // Border color
-                            width: 2.0, // Border width
-                          ),
-                        ),
-                        child: const CircleAvatar(
-                          backgroundColor: Colors
-                              .transparent, // Make inner circle transparent
-                          radius: 35.0, // Adjust radius for desired size
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                      ],
+                    )
+                  : const SizedBox(),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 30, horizontal: 10),

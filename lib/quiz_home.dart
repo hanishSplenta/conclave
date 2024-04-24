@@ -1,13 +1,19 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // import 'package:conclave/custom/spacers.dart';
-import 'package:conclave/quiz_page.dart';
 import 'package:flutter/material.dart';
 import 'package:neopop/neopop.dart';
 import 'package:page_transition/page_transition.dart';
 
+import 'package:conclave/quiz_page.dart';
+
 import 'custom/spacers.dart';
 
 class QuizHome extends StatefulWidget {
-  const QuizHome({super.key});
+  final String quiz;
+  const QuizHome({
+    Key? key,
+    required this.quiz,
+  }) : super(key: key);
 
   @override
   State<QuizHome> createState() => _QuizHomeState();
@@ -19,7 +25,7 @@ class _QuizHomeState extends State<QuizHome> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Quiz'),
+        title: Text(widget.quiz),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -77,7 +83,9 @@ class _QuizHomeState extends State<QuizHome> {
                     context,
                     PageTransition(
                         type: PageTransitionType.rightToLeft,
-                        child: const QuizPage()));
+                        child: QuizPage(
+                          quiz: widget.quiz,
+                        )));
               },
               decoration: const NeoPopTiltedButtonDecoration(
                 color: Color.fromRGBO(255, 235, 52, 1),
