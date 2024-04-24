@@ -15,6 +15,9 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  int q = 0;
+  List<Questions> questions = [];
+
   getDocuments() async {
     final collectionRef =
         FirebaseFirestore.instance.collection('conclaveQuiz').doc(widget.quiz);
@@ -36,6 +39,9 @@ class _QuizPageState extends State<QuizPage> {
     final List<Questions> _features = views
         .map((view) => Questions.fromJson(view as Map<String, dynamic>))
         .toList();
+    setState(() {
+      questions = _features;
+    });
 
     print(_features[0].question.toString());
 
@@ -55,10 +61,22 @@ class _QuizPageState extends State<QuizPage> {
       appBar: AppBar(
         title: Text(widget.quiz),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(8.0),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          children: [],
+          children: [
+            Text(questions[q].question ?? ''),
+            TextButton(
+                onPressed: () {
+                  if (q < questions.length - 1) {
+                    setState(() {
+                      q++;
+                    });
+                    print(q);
+                  }
+                },
+                child: q < questions.length - 1 ? const Text('next') : const Text('Finish'))
+          ],
         ),
       ),
     );

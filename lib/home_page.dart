@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conclave/constants/constants.dart';
 import 'package:conclave/custom/spacers.dart';
+import 'package:conclave/manage_quizes.dart';
 import 'package:conclave/models/feature_model.dart';
 import 'package:conclave/quiz_home.dart';
 import 'package:conclave/services/storage_services.dart';
@@ -534,10 +535,18 @@ class _HomePageState extends State<HomePage> {
                         ),
                         if (admin) ...[
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: ManageQuizes(
+                                        quizes: quizes,
+                                      )));
+                            },
                             child: const Padding(
                               padding: EdgeInsets.all(15.0),
-                              child: Text('Add Quiz'),
+                              child: Text('Manage Quiz'),
                             ),
                           ),
                         ],
