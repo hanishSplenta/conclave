@@ -244,7 +244,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       quizes = documents;
     });
-    print(documents[0].id);
+    print(documents[0]['questions'][0]['question'] + "--------->");
   }
 
   getTitles() async {
