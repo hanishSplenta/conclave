@@ -2,7 +2,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conclave/custom/spacers.dart';
 import 'package:conclave/models/quiz_model.dart';
+import 'package:conclave/score_board.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class QuizPage extends StatefulWidget {
   final String quiz;
@@ -16,6 +18,7 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  int score = 0;
   int q = 0;
   bool loading = true;
   List<Questions> questions = [];
@@ -71,7 +74,7 @@ class _QuizPageState extends State<QuizPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+        child: questions.length!=0 ?Column(
                 children: [
                   Row(
                     children: [
@@ -84,7 +87,7 @@ class _QuizPageState extends State<QuizPage> {
                   ),
                   ListView.builder(
                     shrinkWrap: true,
-                    itemCount: questions.length,
+                    itemCount: questions[q].options!.length,
                     itemBuilder: (context, index) {
                       String option = questions[q].options![index];
                       return Row(
@@ -118,20 +121,21 @@ class _QuizPageState extends State<QuizPage> {
                             onPressed: () {
                               if (q < questions.length - 1) {
                                 if (selected == questions[q].answer) {
-                                  const snackBar = SnackBar(
-                                    /// need to set following properties for best effect of awesome_snackbar_content
-                                    elevation: 0,
-                                    behavior: SnackBarBehavior.floating,
-                                    backgroundColor:
-                                        Color.fromARGB(164, 0, 0, 0),
-                                    content: Text("Correct!"),
-                                  );
+                                  score++;
+                                  // const snackBar = SnackBar(
+                                  //   /// need to set following properties for best effect of awesome_snackbar_content
+                                  //   elevation: 0,
+                                  //   behavior: SnackBarBehavior.floating,
+                                  //   backgroundColor:
+                                  //       Color.fromARGB(164, 0, 0, 0),
+                                  //   content: Text("Correct!"),
+                                  // );
 
-                                  if (!context.mounted) return;
+                                  // if (!context.mounted) return;
 
-                                  ScaffoldMessenger.of(context)
-                                    ..hideCurrentSnackBar()
-                                    ..showSnackBar(snackBar);
+                                  // ScaffoldMessenger.of(context)
+                                  //   ..hideCurrentSnackBar()
+                                  //   ..showSnackBar(snackBar);
                                 }
                                 setState(() {
                                   q++;
@@ -139,6 +143,11 @@ class _QuizPageState extends State<QuizPage> {
                                 print(q);
                               } else {
                                 Navigator.pop(context);
+                                Navigator.push(
+                    context,
+                    PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        child: ScoreBoard(score: score)));
                               }
                             },
                             child: q < questions.length - 1
@@ -149,7 +158,7 @@ class _QuizPageState extends State<QuizPage> {
                   ),
                   VerticalSpacer(height: 110)
                 ],
-              ),
+              ):Center(child: Text('no question found')),
       ),
     );
   }

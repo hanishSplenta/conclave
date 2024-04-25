@@ -150,7 +150,6 @@ class _ImageCaptureState extends State<ImageCapture> {
   }
 
   void _showWelcomePopup(BuildContext context) {
-    print('rannnnnnn');
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -184,7 +183,6 @@ class _ImageCaptureState extends State<ImageCapture> {
   }
 
   Future<void> _loadIsFirstLoad(BuildContext context) async {
-    print('rannnnnnn');
     _showWelcomePopup(context);
   }
 

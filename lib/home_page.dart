@@ -574,10 +574,14 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: Container(
                                 width: 200.0, // Set a width for each item
-                                padding: EdgeInsets.all(10.0),
-                                margin: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.all(10.0),
+                                margin: const EdgeInsets.symmetric(
                                     horizontal: 5.0), // Add spacing
                                 decoration: BoxDecoration(
+                                  image: const DecorationImage(
+          image: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOyDXRMiMSsg6Ct9HbUmbKatB5QekUVW8VOQ&s'),
+          fit: BoxFit.fill,
+        ),
                                   color: Colors.grey[200],
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
@@ -629,15 +633,24 @@ class _HomePageState extends State<HomePage> {
                                         )));
                               },
                               child: Container(
+                                
                                 width: 200.0, // Set a width for each item
-                                padding: EdgeInsets.all(10.0),
-                                margin: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.all(10.0),
+                                margin: const EdgeInsets.symmetric(
                                     horizontal: 5.0), // Add spacing
                                 decoration: BoxDecoration(
+                                  image: const DecorationImage(
+          image: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJIVOzo6-fuhkdegiKAPXZFbnoSxozdMehiw&s'),
+          fit: BoxFit.fill,
+        ),
                                   color: Colors.grey[200],
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                child: Text(featues[index].title!),
+                                child: Text(featues[index].title!,style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black54
+                                ),),
                               ),
                             );
                           },
