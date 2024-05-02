@@ -110,7 +110,7 @@ class _ImageCaptureState extends State<ImageCapture> {
     });
     final i = await getNumberOfImages();
 
-    if (i == 4) {
+    if (i != 4) {
       Navigator.push(
           context,
           PageTransition(
